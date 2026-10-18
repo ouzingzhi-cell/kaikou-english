@@ -1,0 +1,17 @@
+{
+  "id": "./",
+  "name": "开口 · 英语练习",
+  "short_name": "开口英语",
+  "description": "20 个主题、100 段原音。按自己的节奏练习，下载课程后可离线学习。",
+  "lang": "zh-CN",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f3ff",
+  "theme_color": "#6c49b6",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

@@ -1,0 +1,165 @@
+/* iPad and touch presentation, isolated from the Windows application. */
+:root { --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); --safe-left: env(safe-area-inset-left, 0px); --safe-right: env(safe-area-inset-right, 0px); }
+html { -webkit-text-size-adjust: 100%; }
+.main { min-width: 0; }
+.page, .stage-body, .prompt-card, .chat-messages, dialog { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.player-dock { padding-bottom: calc(8px + var(--safe-bottom)); padding-left: max(16px, var(--safe-left)); padding-right: max(16px, var(--safe-right)); }
+.voice-message-body, .voice-message-error, .voice-transcript, .review-item > span { overflow-wrap: anywhere; }
+.voice-message-actions { flex-wrap: wrap; }
+.offline-tool { display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-size: 11px; white-space: nowrap; }
+.offline-tool svg { width: 16px; height: 16px; }
+.offline-indicator { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: #438573; }
+.offline-tool[data-offline="true"] .offline-indicator { background: #a54d32; }
+#offline-dialog { width: min(680px, calc(100vw - 32px)); max-height: min(88dvh, calc(var(--visual-height, 100dvh) - 32px)); padding: 24px; }
+#offline-dialog::backdrop { background: #30204477; }
+#offline-dialog [hidden] { display: none !important; }
+.offline-dialog-heading { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.offline-dialog-heading h2 { margin: 0; }
+.offline-dialog-heading .icon-btn { flex: 0 0 auto; }
+.offline-intro, .offline-storage { color: #71647f; font-size: 12px; line-height: 1.85; margin: 12px 0; }
+.offline-state { border: 1px solid #c8b6df; background: #f0e8fc; color: #573b7b; padding: 12px 14px; border-radius: 9px; line-height: 1.8; font-size: 12px; }
+.offline-state[data-level="warning"] { background: #fff0e7; color: #874330; border-color: #d5a28c; }
+.offline-state[data-level="error"] { background: #fff0f1; color: #99363d; border-color: #ca8a94; }
+.offline-progress { display: grid; gap: 8px; margin: 14px 0; font-size: 12px; color: #644775; }
+.offline-progress progress { width: 100%; height: 12px; accent-color: #6c49b6; }
+.offline-progress[hidden], .offline-confirm[hidden] { display: none; }
+.offline-actions { display: flex; flex-wrap: wrap; gap: 9px; margin: 16px 0; }
+.offline-actions .secondary, .offline-actions .primary { min-height: 44px; font-size: 12px; }
+.offline-lessons { display: grid; gap: 7px; margin: 16px 0; }
+.offline-lesson { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; background: #fff; border: 1px solid #e1d4f0; border-radius: 8px; }
+.offline-lesson div { min-width: 0; }
+.offline-lesson strong { display: block; font-size: 12px; line-height: 1.8; color: #3b2b52; }
+.offline-lesson small { display: block; font-size: 11px; color: #71647f; }
+.offline-lesson .secondary { flex: 0 0 auto; min-height: 44px; font-size: 12px; }
+.offline-confirm { border: 1px solid #e0b4be; background: #fff3f5; border-radius: 8px; padding: 14px; margin: 12px 0; }
+.offline-confirm p { color: #86454c; margin: 0; }
+.offline-confirm .offline-actions { margin-bottom: 0; }
+.offline-update { margin-top: 10px; }
+
+@media (pointer: coarse), (max-width: 1024px) {
+  button, .primary, .secondary, .record-button, .icon-btn, .checkin-button, .toggle, .voice-message-actions button { min-height: 44px; }
+  .icon-btn { min-width: 44px; width: 44px; height: 44px; }
+  input[type=range] { min-height: 28px; }
+  .player input[type=range] { height: 28px; margin: -7px 0; }
+  input.field, select.field, textarea, .date-control input, .field { font-size: 16px; min-height: 44px; }
+  .word-chips button { min-width: 44px; min-height: 44px; }
+  .stage { min-width: 64px; min-height: 52px; font-size: 11px; }
+  .stage b { width: 28px; height: 28px; font-size: 11px; }
+  .stage:before { top: 14px; }
+  .topbar { min-height: 54px; height: auto; padding-top: 4px; padding-bottom: 4px; }
+  .top-tools { gap: 7px; }
+  .checkin-button { font-size: 11px; }
+  .player-dock .player { min-height: 68px; height: auto; gap: 10px; }
+  .player-dock .play-big { min-width: 44px; width: 44px; height: 44px; }
+  .player-time { white-space: nowrap; }
+  .dialogue-tab { min-height: 49px; }
+  .record-button, .recorder-actions .secondary, .recorder-actions .record-button, .practice-footer .primary, .practice-footer .secondary { min-height: 44px; font-size: 12px; }
+  dialog { max-height: calc(var(--visual-height, 100dvh) - 32px - var(--safe-top) - var(--safe-bottom)); }
+}
+
+/* Portrait and landscape iPad use the same roomy, single-column study canvas. */
+@media (min-width: 741px) and (max-width: 1366px) {
+  .shell { display: flex; flex-direction: column; }
+  .sidebar { position: static; inset: auto; height: auto; width: 100%; padding: calc(6px + var(--safe-top)) max(18px, var(--safe-right)) 6px max(18px, var(--safe-left)); flex: 0 0 auto; }
+  .brand, .nav-label, .sidebar-note, .sidebar-footer { display: none; }
+  .nav { display: flex; gap: 7px; justify-content: center; }
+  .nav button { flex: 1; max-width: 180px; padding: 9px 10px; justify-content: center; font-size: 12px; min-height: 46px; }
+  .nav button span { flex: 0 1 auto; white-space: nowrap; }
+  .main { flex: 1; height: auto; min-height: 0; }
+  .topbar { padding-left: max(20px, var(--safe-left)); padding-right: max(20px, var(--safe-right)); }
+  .page { padding: 14px max(22px, var(--safe-right)) 14px max(22px, var(--safe-left)); }
+  .page-home .home-heading { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-bottom: 12px; }
+  .home-heading h1 { font-size: 23px; }
+  .home-heading p { font-size: 12px; margin-top: 3px; }
+  .course-progress { padding: 10px 14px; }
+  .course-progress-title { font-size: 12px; }
+  .course-progress-title small { font-size: 11px; }
+  .course-progress-task .help-note, .home-heading .course-progress-task .help-note { font-size: 11px; }
+  .course-progress-task .secondary { min-height: 44px; font-size: 11px; }
+  .page-home .workspace { grid-template-columns: minmax(0, 1fr); }
+  .page-home .right-column { display: none; }
+  .dialogue-tab { padding: 8px 10px; }
+  .dialogue-tab small { font-size: 11px; }
+  .dialogue-tab strong { font-size: 12px; }
+  .stage-strip { display: flex; overflow-x: auto; gap: 10px; padding: 10px 14px; }
+  .stage { flex: 1 0 64px; }
+  .stage-head { padding: 9px 18px; }
+  .stage-head p { font-size: 12px; }
+  .stage-head h3 { font-size: 19px; }
+  .stage-body .prompt-card .prompt-en { font-size: 21px; }
+  .stage-body .prompt-card .prompt-zh { font-size: 18px; }
+  .stage-body .recorder { padding: 10px 18px; }
+  .recorder-actions { gap: 10px; }
+  .practice-footer { padding: 8px 16px; }
+  .page-practice .voice-layout { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: 12px; }
+  .page-practice .voice-layout > aside { display: grid; grid-template-columns: auto minmax(150px, 1fr) auto; align-items: center; gap: 9px 14px; max-height: 190px; padding: 12px 16px; }
+  .page-practice .voice-layout > aside h3 { grid-column: 1/-1; font-size: 14px; }
+  .voice-layout > aside .help-note, .voice-layout > aside .panel-footnote { display: none; }
+  .voice-layout .field-label, .voice-layout .api-status { margin: 0; }
+  .voice-bubble { min-height: 52px; }
+  .voice-message-actions button { font-size: 12px; }
+  .voice-transcript { font-size: 16px; }
+  .voice-transcript .sentence-zh { font-size: 14px; }
+}
+
+@media (max-width: 740px) {
+  .sidebar { padding-top: calc(5px + var(--safe-top)); padding-left: max(8px, var(--safe-left)); padding-right: max(8px, var(--safe-right)); }
+  .nav button { font-size: 10px; min-height: 48px; }
+  .topbar { min-height: 52px; padding: 3px max(12px, var(--safe-right)) 3px max(12px, var(--safe-left)); }
+  .top-tools { gap: 5px; }
+  .offline-tool { font-size: 11px; padding: 7px 9px; }
+  .offline-tool svg { display: none; }
+  .checkin-button { padding-left: 9px; padding-right: 9px; }
+  .page-home .home-heading { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .home-heading h1 { font-size: 19px; }
+  .home-heading p { font-size: 11px; }
+  .course-progress-title { flex-wrap: wrap; gap: 4px 10px; }
+  .course-progress-title small { margin-left: auto; }
+  .course-progress-task { gap: 8px; }
+  .course-progress-task .secondary { min-height: 44px; }
+  .dialogue-tab { flex: 0 0 150px; justify-content: flex-start; min-height: 48px; }
+  .dialogue-tab small { font-size: 10px; }
+  .stage-strip { padding: 8px 10px; gap: 7px; }
+  .stage { flex: 0 0 68px; }
+  .stage-head p { font-size: 11px; }
+  .practice-footer { gap: 8px; padding: 7px 10px; }
+  .practice-footer .secondary, .practice-footer .primary { padding: 8px 9px; font-size: 11px; gap: 5px; }
+  .stage-navigation { gap: 5px; }
+  .player-dock { padding: 5px 10px calc(5px + var(--safe-bottom)); }
+  .player-dock .player { padding: 7px 8px; gap: 7px; }
+  .player-dock .player-title { font-size: 11px; }
+  .player-dock .player-time { font-size: 10px; min-width: 64px; }
+  .player-title small { display: none; }
+  .prompt-card .prompt-en { font-size: 18px; }
+  .prompt-card .prompt-zh { font-size: 16px; }
+  .voice-layout > aside { max-height: 200px; }
+  .voice-layout > aside .field { font-size: 16px; }
+  .voice-transcript { font-size: 15px; }
+  .page-home { display: block; overflow: auto; }
+  .page-home .workspace, .page-home .content, .page-home .practice-box { display: block; overflow: visible; }
+  .stage-body { min-height: 300px; overflow: visible; }
+  .stage-body .recorder { height: auto; min-height: 340px; }
+  .stage-body .prompt-card { min-height: 170px; overflow: visible; }
+  .stage-body .listen-hero { min-height: 285px; }
+  #offline-dialog { width: calc(100vw - 22px); padding: 18px; }
+  .offline-dialog-heading h2 { font-size: 20px; }
+  .offline-lesson { padding: 10px; gap: 8px; }
+}
+@media (max-width: 480px) { .review-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* A keyboard or short landscape screen must not collapse the reading area. */
+@media (max-height: 760px) and (max-width: 1366px) {
+  .page-home { display: block; overflow: auto; }
+  .page-home .workspace { display: block; overflow: visible; }
+  .page-home .content { display: block; }
+  .page-home .practice-box { display: block; overflow: visible; }
+  .stage-body { min-height: 280px; max-height: none; overflow: visible; }
+  .stage-body .recorder { height: auto; min-height: 300px; }
+  .stage-body .prompt-card { min-height: 155px; max-height: none; overflow: visible; }
+  .stage-body .listen-hero { min-height: 260px; }
+  .page-practice { overflow: auto; display: block; }
+  .page-practice .voice-layout { display: flex; flex-direction: column; }
+  .page-practice .voice-layout > aside { max-height: none; }
+  .page-practice .voice-chat { min-height: 400px; height: 440px; flex: none; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }

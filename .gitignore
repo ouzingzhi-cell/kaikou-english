@@ -1,0 +1,48 @@
+# Credentials and local environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+.wrangler/
+.cloudflare/
+
+# Third-party installs, build output and machine state
+node_modules/
+dist/
+build/
+.runtime/
+QA/
+coverage/
+*.log
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
+
+# Course materials and recordings are intentionally outside the MIT source
+public/studio/data/
+public/studio/assets/audio/
+public/studio/assets/ambience/
+*.mp3
+*.wav
+*.m4a
+*.mp4
+*.webm
+*.ogg
+*.flac
+*.docx
+*.pdf
+
+# Personal progress, recordings, browser profiles and local archives
+user-data/
+recordings/
+browser/
+profiles/
+*学习记录*.json
+*.sqlite
+*.sqlite3
+*.zip
+*.7z
