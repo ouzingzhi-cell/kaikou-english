@@ -41,6 +41,8 @@ test('transcript retains clickable English, one full translation and both comple
   assert.equal((html.match(/class="sentence-note"/g)||[]).length,2);
   assert.ok(html.includes('&quot;Hello,&quot;')&&html.includes('I&#39;m ready.'));
   assert.ok(!html.includes('这句话下面标注'));
+  assert.doesNotMatch(html, /<blockquote|note-quote/);
+  assert.equal(html.split('&quot;Hello,&quot;').length-1,1,'English phrase occurs only in the original');
 });
 test('actual transcript output contains ASCII apostrophe entities and no curly apostrophes',()=>{
   const variant={...line,en:'I’m ready. Iʼll go.',chunks:[{en:'I’m ready. Iʼll go.'}],annotations:[{quote:'I＇m ready.',text:'I‘m 保留原有意思。'}]};
@@ -58,6 +60,7 @@ test('sentence comparison shows its own notes after the full Chinese translation
     const html=render('sentenceUI',{ui:{showTranscript:true,showZh:true,line:0,stage}});
     assert.equal(html.split(line.zh).length-1,1);assert.equal((html.match(/class="sentence-note"/g)||[]).length,2);
     assert.ok(html.indexOf('sentence-note')>html.indexOf(line.zh));
+    assert.doesNotMatch(html, /<blockquote|note-quote/);
   }
   assert.ok(!render('sentenceUI',{ui:{showTranscript:true,showZh:false,line:0,stage:2}}).includes('sentence-note'));
   assert.ok(!render('sentenceUI',{ui:{showTranscript:false,showZh:true,line:0,stage:8}}).includes('sentence-note'));

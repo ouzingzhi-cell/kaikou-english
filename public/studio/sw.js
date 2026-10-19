@@ -1,7 +1,7 @@
 /* Offline course files only. API requests and private voice messages are never cached. */
 'use strict';
 
-const VERSION = '2026-10-20-1';
+const VERSION = '2026-10-20-2';
 const PREFIX = 'kaikou-ipad-';
 const SHELL_CACHE = `${PREFIX}shell-${VERSION}`;
 const MEDIA_CACHE = `${PREFIX}media-1`;
