@@ -58,3 +58,7 @@ html,body,#app{height:100%;overflow:hidden}.shell{height:100dvh;min-height:0;ove
 /* Keep the reset action visibly distinct from the left play/pause toggle. */
 .player .player-stop{width:auto;min-width:60px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:0 9px;font-size:11px}.player-stop svg{width:16px;height:16px}
 @media(max-width:740px){.player .player-stop{min-width:52px;padding:0 6px;gap:4px}}
+.sentence-note{margin:10px 0 0;padding:11px 14px;border-left:3px solid #b99ed7;border-radius:0 8px 8px 0;background:#f6f2fa;color:var(--ink);font-size:13px;line-height:1.9;overflow-wrap:anywhere}
+.sentence-note .note-quote{margin:0 0 5px;font-weight:600;color:#685180;line-height:1.7}
+.sentence-note .note-text{margin:0;white-space:pre-wrap}
+@media(max-width:740px){.sentence-note{padding:9px 11px;font-size:12px}}

@@ -1,11 +1,13 @@
 /* Offline course files only. API requests and private voice messages are never cached. */
 'use strict';
 
-const VERSION = '2026-10-18-2';
+const VERSION = '2026-10-20-1';
 const PREFIX = 'kaikou-ipad-';
 const SHELL_CACHE = `${PREFIX}shell-${VERSION}`;
 const MEDIA_CACHE = `${PREFIX}media-1`;
 const BASE = new URL('./', self.location.href);
+const REVISED_AUDIO = new URL('assets/audio/1.2.mp3', BASE).href;
+const REVISED_AUDIO_BYTES = 324140;
 const SHELL_FILES = [
   'index.html', 'styles.css', 'theme-lilac.css', 'mobile.css', 'pwa.js',
   'manifest.webmanifest', 'application.js', 'audio-engine.js', 'checkin.js',
@@ -113,6 +115,12 @@ self.addEventListener('activate', event => {
       (name.startsWith(`${PREFIX}shell-`) && name !== SHELL_CACHE) ||
       (name.startsWith(`${PREFIX}media-`) && name !== MEDIA_CACHE)
     ).map(name => caches.delete(name)));
+    // Preserve all other downloads; this clip had a spoken Chinese intro removed.
+    const media = await caches.open(MEDIA_CACHE);
+    const previous = await media.match(REVISED_AUDIO);
+    if (previous && Number(previous.headers.get('Content-Length')) !== REVISED_AUDIO_BYTES) {
+      await media.delete(REVISED_AUDIO);
+    }
     await self.clients.claim();
   })());
 });

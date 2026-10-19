@@ -10,7 +10,7 @@ const dialog = document.createElement('dialog');
 dialog.id = 'offline-dialog';
 dialog.setAttribute('aria-labelledby', 'offline-title');
 dialog.innerHTML = `<div class="offline-dialog-heading"><h2 id="offline-title">带着课程，随时开口</h2><button class="icon-btn" data-offline-close aria-label="关闭离线课程">✕</button></div>
-  <p class="offline-intro">先联网打开一次，再下载想练的课程。基础课文随界面保存；每课下载 5 段原音。离线可听音、变速、录音回听与记录完成，AI 对话需要联网。</p>
+  <p class="offline-intro">先联网打开一次，再下载想练的课程。基础课文随界面保存；每课下载 5 段原音。离线可听音、变速、录音回听与记录完成。</p>
   <div class="offline-state" role="status" aria-live="polite"></div>
   <p class="offline-storage"></p>
   <div class="offline-progress" hidden><progress max="1" value="0" aria-label="课程下载进度"></progress><span aria-live="polite"></span></div>
@@ -58,7 +58,7 @@ function setOnlineState() {
     button.title = navigator.onLine ? '管理本设备的离线课程' : '当前离线，查看已下载课程';
   }
   if (!navigator.onLine && !activeDownload) setMessage(shellReady
-    ? '当前离线 · 已下载的原音可直接使用。AI 对话和新下载需要网络。'
+    ? '当前离线 · 已下载的原音可直接使用。新下载需要网络。'
     : '当前离线 · 首次使用需联网完成离线准备。', 'warning');
   else if (navigator.onLine && !activeDownload && lastLevel !== 'error') setMessage(shellReady
     ? '离线界面与全部课文已准备好。选一课下载原音吧。'

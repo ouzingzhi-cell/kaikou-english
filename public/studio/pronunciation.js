@@ -1,5 +1,11 @@
 const digits = ['zero','one','two','three','four','five','six','seven','eight','nine'];
 const small = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+
+/** Display typography also covers legacy/user-authored English kept in storage. */
+export function normalizeEnglishPunctuation(value) {
+  return String(value??'').replace(/[‘’ʼ＇]/g,"'");
+}
+
 function number(n) {
   n=Number(n);
   if (n<20) return small[n];
@@ -9,7 +15,7 @@ function number(n) {
 
 /** English-only spoken forms prevent a Chinese/default voice interpreting numbers. */
 export function spokenEnglish(text) {
-  return text.replace(/[’‘]/g,"'")
+  return normalizeEnglishPunctuation(text)
     .replace(/\bMr\.\s*/gi,'Mister ').replace(/\bMrs\.\s*/gi,'Missus ').replace(/\bMs\.\s*/gi,'Miz ').replace(/\bDr\.\s*/gi,'Doctor ')
     .replace(/\bRoom\s*(\d{2,5})\b/gi,(_,n)=>'room '+n.split('').map(c=>digits[Number(c)]).join(' '))
     .replace(/\b(\d{1,2}):(\d{2})\b/g,(_,h,m)=>number(h)+(m==='00'?'':` ${m.startsWith('0')?'oh ':''}${number(m)}`))

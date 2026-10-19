@@ -72,7 +72,7 @@ export function createStore(saved = {}) {
   const store = {version:3,progress,history:(saved.history || []).map(row=>({...row})),reviewDone:{...saved.reviewDone},
     weeklyDraws:structuredClone(saved.weeklyDraws || {}),checkins:structuredClone(saved.checkins || {}),dialogueCompletions:{},
     startDate:saved.startDate || '',selectedLesson:saved.selectedLesson || saved.history?.[0]?.lessonId || 1,
-    accent:saved.accent || 'en-GB',noiseScene:saved.noiseScene || 'restaurant',noiseVolume:saved.noiseVolume ?? 25};
+    accent:'en-US',noiseScene:saved.noiseScene || 'restaurant',noiseVolume:saved.noiseVolume ?? 25};
   if (!own(saved,'dialogueCompletions')) migrateCompletions(store);
   else for (const [key,value] of Object.entries(saved.dialogueCompletions || {})) {
     const match = /^(\d+):([0-4])$/.exec(key);

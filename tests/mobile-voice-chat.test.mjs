@@ -194,7 +194,7 @@ async function settingsHarness({configured=false, configure, canPersist=true, of
   const context={$:selector=>selector==='#settings-dialog'?dialog:element(selector),chat,chatState:{configured,config:{provider:'openai',model:'gpt-4.1-mini',voice:'coral'}},store,MOBILE_VOICES:['coral','marin'],esc:String,today:'2026-10-18',openClearLearningRecords(){},render(){renders++},toast:message=>toasts.push(message),persist:next=>{if(!canPersist)return false;saved.push(JSON.parse(JSON.stringify(next)));Object.assign(store,next);return true}};
   runInNewContext(`${openSettings}\nopenSettings();`,context);
   await turn();
-  return {element,saved,calls,toasts,store,chat,get closed(){return closed},get renders(){return renders},submit:()=>form.onsubmit({preventDefault(){},currentTarget:form})};
+  return {element,saved,calls,toasts,store,chat,get html(){return dialog.innerHTML},get closed(){return closed},get renders(){return renders},submit:()=>form.onsubmit({preventDefault(){},currentTarget:form})};
 }
 
 test('offline settings save date and accent without keys or AI configuration request',async()=>{
@@ -202,7 +202,7 @@ test('offline settings save date and accent without keys or AI configuration req
   assert.equal(state.store.startDate,'2026-10-20');assert.equal(state.store.accent,'en-US');
   assert.deepEqual(state.store.progress,{'1:0':[0]});assert.equal(state.saved.length,1);assert.equal(state.calls.length,0);
   assert.equal(state.closed,1);assert.equal(state.chat.configured,false);
-  assert.match(state.toasts[0],/在线语音尚未配置/);assert.ok(!state.toasts[0].includes('已在本页配置'));
+  assert.match(state.toasts[0],/在线美音朗读尚未配置/);assert.ok(!state.toasts[0].includes('已在本页配置'));
 });
 
 test('changing AI settings without keys keeps learning preferences saved and shows configuration error',async()=>{
@@ -210,7 +210,7 @@ test('changing AI settings without keys keeps learning preferences saved and sho
   state.element('#api-voice').value='marin';await state.submit();
   assert.equal(state.saved.length,1);assert.equal(state.store.accent,'en-US');assert.equal(state.calls.length,1);
   assert.equal(state.closed,0);assert.equal(state.chat.configured,false);
-  assert.match(state.element('#settings-result').textContent,/学习设置已保存；在线语音配置未完成/);
+  assert.match(state.element('#settings-result').textContent,/学习设置已保存；在线美音朗读配置未完成/);
   assert.match(state.element('#settings-result').textContent,/请填写 OpenAI API Key/);
   assert.equal(state.element('[type=submit]').disabled,false);
 });
@@ -220,7 +220,7 @@ test('explicit key triggers AI configuration after preferences persist and never
   assert.equal(state.calls.length,1);assert.equal(state.calls[0].apiKey,primary);
   assert.equal(state.saved.length,1);assert.ok(!JSON.stringify(state.saved).includes(primary));
   assert.equal(state.element('#api-key').value,'');assert.equal(state.closed,1);
-  assert.match(state.toasts[0],/在线语音已在本页配置/);
+  assert.match(state.toasts[0],/美音朗读已在本页配置/);
 });
 
 test('configured session with untouched AI fields only saves learning preferences',async()=>{
@@ -235,4 +235,11 @@ test('storage failure neither mutates learning preferences nor sends new credent
   assert.equal(state.store.accent,'en-GB');assert.equal(state.saved.length,0);
   assert.match(state.element('#settings-result').textContent,/学习设置尚未保存/);
   assert.equal(state.element('[type=submit]').disabled,false);
+});
+
+ test('reading settings expose only US pronunciation and no scenario model controls',async()=>{
+  const state=await settingsHarness();
+  assert.ok(!state.html.includes('setting-accent')&&!state.html.includes('en-GB')&&!state.html.includes('英音'));
+  assert.ok(!state.html.includes('id="api-model"')&&!state.html.includes('对话模型')&&!state.html.includes('情景'));
+  assert.ok(state.html.includes('美音朗读'));
 });
